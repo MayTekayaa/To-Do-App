@@ -1,56 +1,59 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+    <v-layout>
+      <v-navigation-drawer
+        mini-variant-width="80px"
+        class="hidden-md-and-down"
+        expand-on-hover
+        rail>
+        <v-list>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-img src="./assets/user.png"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="`<strong>Foulen Ben Foulen</strong>`"></v-list-item-title>
+              <v-list-item-subtitle>foulen.ben.foulen@gmail.com</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+        <v-divider></v-divider>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <HelloWorld/>
-    </v-main>
+        <v-list dense>
+          <v-list-item>
+            <v-list-item-icon>
+              <font-awesome-icon icon="fa-solid fa-list-check" size="lg" />
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Tasks</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <font-awesome-icon icon="fa-solid fa-calendar" size="lg" />
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Calendar</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+      <v-main class="blue-grey lighten-5">
+        <Home/>
+      </v-main>
+    </v-layout>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import Home from './components/Home.vue';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    Home,
   },
 
   data: () => ({
