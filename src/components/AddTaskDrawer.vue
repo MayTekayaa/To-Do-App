@@ -16,14 +16,18 @@
       <v-divider class="py-4" />
       <div class="pa-2 mx-3">
         <v-text-field
+          v-model="taskTitle"
           label="Enter the name of the task"
           :rules="rules"
-          hide-details="auto" />
+          hide-details="auto"
+          outlined />
       </div>
       <div class="pa-2 mx-3">
         <v-textarea 
+          v-model="taskDescription"
           label="Enter the description of the task"
-          class="mt-y" />
+          class="mt-y"
+          outlined />
       </div>
       <div class="pa-2 mx-3">
         <v-menu
@@ -46,7 +50,7 @@
             </v-text-field>
           </template>
           <v-date-picker
-            v-model="date"
+            v-model="taskDueDate"
             no-title
             scrollable>
             <v-spacer></v-spacer>
@@ -67,11 +71,22 @@
       </div>
       <div style="height:45%;"></div>
       <v-row class="justify-end pe-10">
-        <v-btn variant="flat" 
-          color="#0097A7"
-          class="white--text rounded-pill">
-          Save
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <div v-bind="attrs" 
+              v-on="on">
+              <v-btn
+                variant="flat" 
+                color="#0097A7"
+                class="white--text rounded-pill"
+                :disabled="disabledSave"
+                @click="save">
+                Save
+              </v-btn>
+            </div>
+          </template>
+          <span>All fields are required</span>
+        </v-tooltip>
       </v-row>
     </v-card>
   </v-navigation-drawer>
@@ -79,42 +94,61 @@
 
 <script>
 export default {
-    name: 'AddTaskDrawer',
-    props: {
-       value: {
-        type: Boolean,
-        default: false,
-      },
+  name: 'AddTaskDrawer',
+
+  props: {
+    value: {
+      type: Boolean,
+      default: false,
     },
-    computed: {
-      smallScreen() {
-        return this.$vuetify.breakpoint.mdAndDown;
-      }
-    },
-    data: () => ({
-      drawer: null,
-      rules: [v => !v || v.length <= 50 || 'Only 50 characters allowed'],
-      weekday: [0, 1, 2, 3, 4, 5, 6],
-      type: 'month',
-      date: new Date().toISOString().substr(0, 7),
-      menu: false,
+  },
+  data: () => ({
+    drawer: null,
+    rules: [v => !v || v.length <= 50 || 'Only 50 characters allowed'],
+    weekday: [0, 1, 2, 3, 4, 5, 6],
+    type: 'month',
+    date: new Date().toISOString().substr(0, 7),
+    menu: false,
+    taskTitle: null,
+    taskDescription: null,
+    taskDueDate: null,
     }),
-    methods: {
-      open() {
-        this.drawer = true;
-      },
-      close() {
-        this.drawer = false;
-      },
+  computed: {
+    smallScreen() {
+      return this.$vuetify.breakpoint.mdAndDown;
     },
-    watch: {
-       value() {
-         if (this.value && !this.drawer) {
+    disabledSave() {
+      return !this.taskTitle || !this.taskDescription || !this.taskDueDate;
+    }
+  },
+  watch: {
+    value() {
+      if (this.value && !this.drawer) {
         this.open();
       } else if (!this.value && this.drawer) {
         this.close();
       }
     },
+  },
+  methods: {
+    open() {
+      this.drawer = true;
+    },
+    close() {
+      this.drawer = false;
+    },
+    save() {
+      document.dispatchEvent(new CustomEvent('add-task-event',
+          { detail: { taskTitle: this.taskTitle, taskDescription: this.taskDescription, taskDueDate: this.taskDueDate} }));
+
+      this.close();
+      this.resetDrawer();
+    },
+    resetDrawer() {
+      this.taskTitle=null;
+      this.taskDescription=null;
+      this.taskDueDate=null;
     }
-  }
+  },
+}
 </script>

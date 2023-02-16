@@ -3,7 +3,7 @@
     <v-row class="text-center">
       <v-col class="mb-4">
         <h4 class="display-2 font-weight-bold mb-3">
-          Schedule your goal
+          Schedule your goals
         </h4>
       </v-col>
     </v-row>
@@ -24,20 +24,20 @@ import TasksList from './TasksList.vue';
 import AddTaskDrawer from './AddTaskDrawer.vue';
 
 export default {
-    name: 'Home',
+  name: 'Home',
 
-    components: {
-      TasksList,
-      AddTaskDrawer
+  components: {
+    TasksList,
+    AddTaskDrawer
+  },
+
+  data: () => ({
+    clickedDrawer: true
+  }),
+  methods: {
+    clickToAdd() {
+      this.$refs.taskDrawer.open();
     },
-
-    data: () => ({
-      clickedDrawer: true
-    }),
-    methods: {
-      clickToAdd() {
-        this.$refs.taskDrawer.open();
-      },
-    }
   }
+}
 </script>

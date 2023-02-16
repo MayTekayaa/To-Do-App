@@ -13,36 +13,35 @@
 import TaskCard from './TaskCard.vue';
 
 export default {
-    name: 'TasksList',
+  name: 'TasksList',
 
-    components: {
-      TaskCard,
-    },
+  components: {
+    TaskCard,
+  },
 
-    data: () => ({
-      tasksList: [
-        {
-          id: 'task_01',
-          title: 'To Do 1',
-          done: false,
-          description:'Desc1',
-          deadline: new Date('December 17, 2022 03:24:00'),
-        },
-        {
-          id:'task_02',
-          title:'To Do 2',
-          done: false,
-          description:'Desc2',
-          deadline: new Date('December 17, 2022 03:24:00'),
-        },
-        {
-          id:'task_03',
-          title:'To Do 3',
-          done: true,
-          description:'Desc3',
-          deadline: new Date('December 17, 2022 03:24:00'),
-        }
-      ]
-    }),
+  data: () => ({
+    tasksList: [],
+    displayAlert: false,
+  }),
+  created() {
+    document.addEventListener('add-task-event', event => {
+      if (event && event.detail) {
+        this.tasksList.push({id: this.tasksList.length, title: event.detail.taskTitle, description: event.detail.taskDescription, deadline: event.detail.taskDueDate, done: false});
+      }
+    });
+    document.addEventListener('archive-task', event => {
+      if (event && event.detail) {
+        const tasks = this.tasksList.filter(task => task.id !== event.detail.id);
+        this.tasksList = tasks;
+      }
+      this.displayAlert= true;
+    });
+    document.addEventListener('delete-task', event => {
+      if (event && event.detail) {
+        const tasks = this.tasksList.filter(task => task.id !== event.detail.id);
+        this.tasksList = tasks;
+      }
+    });
   }
+}
 </script>
